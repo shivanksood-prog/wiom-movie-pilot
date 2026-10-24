@@ -60,6 +60,7 @@
 .tp-ph { font-size: 16px; font-weight: 800; }
 .tp-part { display: flex; align-items: center; gap: 14px; padding: 10px 12px; background: rgba(250,249,252,0.06); border-radius: 10px; }
 .tp-part .n { font-size: 22px; font-weight: 800; color: #665E75; }
+.tp-part .th { width: 110px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; flex: none; background: #0b0712; }
 .tp-part .t { font-weight: 700; font-size: 14px; }
 .tp-part .s { color: #A7A1B2; font-size: 12px; margin-top: 2px; }
 .tp-credits { margin: 8px 0 0; color: #665E75; font-size: 11px; line-height: 16px; }

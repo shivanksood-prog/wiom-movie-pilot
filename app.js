@@ -85,6 +85,7 @@
     var base = new URL(CFG.MEDIA_BASE, location.href);
     f.poster = new URL(f.poster || 'poster.jpg', base).href;
     if (f.trailer) f.trailer = new URL(f.trailer, base).href;
+    (f.parts || []).forEach(function (p, i) { if (!p.thumb) p.thumb = new URL('part' + (i + 1) + '.jpg', base).href; });
     S.film = f;
     $('watch-title').textContent = f.title;
     $('watch-credits').textContent = f.credits || '';

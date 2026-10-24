@@ -37,7 +37,9 @@
           (f.trailer ? '<button type="button" class="tp-sec" id="tp-trailer2"><span aria-hidden="true">🎬</span> ट्रेलर देखें</button>' : '') +
           '<p class="tp-syn">' + SYNOPSIS + '</p>' +
           (parts.length ? '<div class="tp-parts"><div class="tp-ph">इस टिकट में</div>' + parts.map(function (p, i) {
-            return '<div class="tp-part"><span class="n">' + (i + 1) + '</span><div class="w"><div class="t">' + esc(p.title) + '</div><div class="s">' + dur((p.end || 0) - (p.start || 0)) + '</div></div></div>';
+            return '<div class="tp-part"><span class="n">' + (i + 1) + '</span>' +
+              (p.thumb ? '<img class="th" src="' + esc(p.thumb) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+              '<div class="w"><div class="t">' + esc(p.title) + '</div><div class="s">' + dur((p.end || 0) - (p.start || 0)) + '</div></div></div>';
           }).join('') + '</div>' : '') +
           (f.credits ? '<p class="tp-credits">' + esc(f.credits) + '</p>' : '') +
         '</div>' +
