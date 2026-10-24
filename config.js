@@ -6,7 +6,7 @@
  *   DRM_MODE   'auto' = use what /api/playback/start returns; 'clearkey' | 'widevine' to force
  */
 window.WIOM_CONFIG = {
-  API_BASE: 'PENDING_WORKER_URL',
+  API_BASE: 'https://wiom-movie-pilot-api.shivank-sood.workers.dev',
   MEDIA_BASE: 'https://pub-0d5a4e22335f4c3e8574d3a026a91933.r2.dev/films/sstb-notld/v1/',
   FILM_ID: 'sstb-notld',
   DRM_MODE: 'auto',
