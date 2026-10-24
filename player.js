@@ -201,6 +201,11 @@
     this.clearMsg(); this.setBuffering(true); this.state = 'starting';
     if (!window.shaka) return this.fail({ t: 'प्लेयर लोड नहीं हुआ', s: 'इंटरनेट चेक करके फिर कोशिश करें', code: 'shaka_missing', retry: true });
     shaka.polyfill.installAll();
+    // Axinom FairPlay on Safari/iOS needs the webkit-prefixed EME polyfill installed explicitly
+    // (multi-key FairPlay fails with shaka error 3016 otherwise) — per Axinom's Shaka guide.
+    if (isSafari() && !window.__wiomApplePolyfilled && shaka.polyfill.PatchedMediaKeysApple && shaka.polyfill.PatchedMediaKeysApple.install) {
+      try { shaka.polyfill.PatchedMediaKeysApple.install(true); window.__wiomApplePolyfilled = true; } catch (e) { /* older shaka */ }
+    }
     if (!shaka.Player.isBrowserSupported()) return this.fail({ t: 'यह ब्राउज़र सपोर्टेड नहीं है', s: 'Chrome या नया ब्राउज़र इस्तेमाल करें', code: 'browser_unsupported' });
 
     var s;
@@ -243,8 +248,9 @@
       manifest: { retryParameters: retry },
       abr: { enabled: true, defaultBandwidthEstimate: 1200000, switchInterval: 6 },
     });
-    if (mode === 'widevine' && safari && shaka.drm && shaka.drm.FairPlay) {
-      try { player.configure('drm.initDataTransform', shaka.drm.FairPlay.initDataTransform); } catch (e) { /* older shaka */ }
+    var FP = (shaka.drm && shaka.drm.FairPlay) || (shaka.util && shaka.util.FairPlayUtils);
+    if (mode === 'widevine' && safari && FP && FP.initDataTransform) {
+      try { player.configure('drm.initDataTransform', FP.initDataTransform); } catch (e) { /* older shaka */ }
     }
 
     var net = player.getNetworkingEngine(), RT = shaka.net.NetworkingEngine.RequestType;
