@@ -1,0 +1,87 @@
+/* OFFER screen — values copied from the Figma "Naveen offer" frame (360×720, light #FAF9FC).
+ * Type ramp: Display/D1_48_Bold, Title/T2_24_Bold, Title/T4_16_Regular, Body/B1_16, B2_14, B3_12, Label/L3_12_Semibold. */
+#screen-offer { background: #FAF9FC; color: #161021; }
+.nf {
+  display: flex; flex-direction: column; gap: 24px;
+  max-width: 400px; margin: 0 auto;
+  padding: 8px 16px 112px; /* bottom clears the fixed action bar (80px) */
+  font-family: "Noto Sans", "Noto Sans Devanagari", system-ui, sans-serif;
+}
+
+/* heading */
+.nf-head { display: flex; flex-direction: column; gap: 12px; }
+.nf-h1 { margin: 0; font-weight: 700; font-size: 24px; line-height: 32px; text-align: center; color: #161021; }
+.nf-sub { margin: 0; font-weight: 400; font-size: 16px; line-height: 24px; text-align: center; color: #161021; }
+
+/* offer / hero */
+.nf-hero {
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  padding: 16px 12px;
+  background: linear-gradient(135deg, #D9008D 14.64%, #A3009F 51.41%, #6D17CE 85.36%);
+  box-shadow: 0px 4px 12px 1px rgba(109, 23, 206, 0.3);
+  border-radius: 16px;
+}
+.nf-tag {
+  padding: 4px 16px; background: rgba(255, 255, 255, 0.3); border-radius: 24px;
+  font-weight: 600; font-size: 12px; line-height: 16px; color: #FAF9FC;
+}
+.nf-free { display: flex; flex-direction: column; align-items: center; gap: 4px; align-self: stretch; }
+.nf-d1 { font-weight: 700; font-size: 48px; line-height: 64px; text-align: center; color: #FAF9FC; }
+.nf-b1 { font-weight: 700; font-size: 16px; line-height: 24px; text-align: center; color: #FAF9FC; }
+.nf-terms {
+  align-self: stretch; padding: 12px; background: rgba(255, 255, 255, 0.3); border-radius: 12px;
+  font-weight: 600; font-size: 14px; line-height: 20px; text-align: center; color: #FAF9FC;
+}
+
+/* movie card — same card treatment as the design's small offer cards (2dp shadow, radius 16) */
+.nf-movie {
+  display: flex; align-items: center; gap: 12px; padding: 12px;
+  background: #FAF9FC; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15); border-radius: 16px;
+}
+.nf-poster {
+  width: 96px; height: 54px; flex: none; border-radius: 8px;
+  background-color: #352D42; background-size: cover; background-position: center;
+}
+.nf-mi { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.nf-mt { font-weight: 700; font-size: 14px; line-height: 20px; color: #161021; }
+.nf-mm { font-weight: 600; font-size: 12px; line-height: 16px; color: #665E75; }
+.nf-owned { font-weight: 600; font-size: 12px; line-height: 16px; color: #008043; }
+
+/* note / offer auto-applies */
+.nf-note { display: flex; align-items: stretch; border: 1px solid #008043; border-radius: 16px; overflow: hidden; }
+.nf-note-bar { width: 8px; flex: none; background: #008043; }
+.nf-note-in { display: flex; align-items: center; gap: 12px; padding: 12px; background: #E1FAED; flex: 1; }
+.nf-note-ic {
+  width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center;
+  background: #C9F0DD; border-radius: 24px; font-size: 18px;
+}
+.nf-note-tx { display: flex; flex-direction: column; gap: 4px; }
+.nf-note-tx .t { font-weight: 600; font-size: 14px; line-height: 20px; color: #008043; }
+.nf-note-tx .s { font-weight: 400; font-size: 12px; line-height: 16px; color: #665E75; }
+
+/* fixed bottom action bar */
+.nf-actions {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding: 16px; background: #FAF9FC; box-shadow: 0 -2px 12px rgba(22, 16, 33, 0.08);
+}
+.nf-cta {
+  display: flex; justify-content: center; align-items: center; gap: 12px;
+  width: 100%; max-width: 368px; margin: 0 auto; padding: 12px 16px; min-height: 48px;
+  background: #FF66C9; border: 0; border-radius: 16px; cursor: pointer;
+  font-family: inherit; font-weight: 500; font-size: 16px; line-height: 24px; color: #161021;
+}
+.nf-cta:hover { background: #FFB2E4; }
+.nf-cta:disabled { opacity: 0.7; cursor: default; }
+.nf-cta .spin {
+  width: 16px; height: 16px; border: 2px solid rgba(22, 16, 33, 0.3); border-top-color: #161021;
+  border-radius: 50%; animation: nfspin 0.8s linear infinite;
+}
+@keyframes nfspin { to { transform: rotate(360deg); } }
+
+/* hide the fixed bar when the offer screen is not active */
+#screen-offer[hidden] .nf-actions { display: none; }
+
+@media (min-width: 720px) {
+  .nf { padding-top: 24px; }
+  .nf-actions { position: sticky; box-shadow: none; background: transparent; padding: 0; }
+}

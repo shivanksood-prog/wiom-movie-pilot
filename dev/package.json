@@ -1,0 +1,3 @@
+{ "name": "wiom-movie-pilot-dev", "private": true, "type": "module",
+  "scripts": { "mock": "node mock-server.mjs", "e2e": "node e2e.mjs" },
+  "devDependencies": { "puppeteer-core": "25.12.0" } }

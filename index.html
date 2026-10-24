@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#120D1A">
+<meta name="description" content="Wiom TV — ₹14 Net पैक के साथ फ़िल्म फ्री">
+<title>Wiom TV — फ़िल्म</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23D9008D'/><path d='M12 9l12 7-12 7z' fill='white'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="offer.css">
+</head>
+<body>
+<a class="skip-link" href="#app">सीधे कंटेंट पर जाएँ</a>
+<div id="shell">
+  <div id="main-col">
+    <header class="topbar">
+      <a class="brand" href="#offer" aria-label="Wiom TV होम"><span class="brand-mark" aria-hidden="true"></span><span>wiom <b>tv</b></span></a>
+      <div class="topbar-right">
+        <button type="button" id="user-chip" class="user-chip" title="लॉगआउट" hidden></button>
+        <button id="bp-toggle" class="bp-toggle" type="button" aria-controls="bp" aria-expanded="false">
+          <span aria-hidden="true">⚙</span> बैकएंड लाइव <span id="bp-count" class="bp-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="app" tabindex="-1">
+      <!-- 1. OFFER — isolated in offer.js + offer.css so it can be swapped for the Figma design -->
+      <section id="screen-offer" class="screen" data-route="offer" aria-labelledby="offer-title" hidden></section>
+
+      <!-- 2. LOGIN -->
+      <section id="screen-login" class="screen narrow" data-route="login" aria-labelledby="login-title" hidden>
+        <button class="back" type="button" data-go="offer" aria-label="वापस">‹ वापस</button>
+        <h1 id="login-title" class="h1">मोबाइल नंबर से लॉगिन</h1>
+        <p class="sub">पैक और फ़िल्म इसी नंबर से जुड़ेंगे</p>
+        <form id="form-phone" class="card form" novalidate>
+          <label for="in-phone" class="lbl">मोबाइल नंबर</label>
+          <div class="phone-row">
+            <span class="cc" aria-hidden="true">+91</span>
+            <input id="in-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="10" placeholder="98XXXXXXXX" required aria-describedby="phone-err">
+          </div>
+          <p id="phone-err" class="field-err" role="alert"></p>
+          <button class="btn primary block" type="submit"><span class="lbl-t">OTP भेजें</span></button>
+        </form>
+        <form id="form-otp" class="card form" novalidate hidden>
+          <label for="in-otp" class="lbl">OTP डालें <span id="otp-to" class="muted"></span></label>
+          <input id="in-otp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="• • • •" required aria-describedby="otp-err otp-hint" class="otp">
+          <button id="otp-hint" class="demo-hint" type="button">डेमो OTP: <b>1234</b> · टैप करके भरें</button>
+          <p id="otp-err" class="field-err" role="alert"></p>
+          <button class="btn primary block" type="submit"><span class="lbl-t">आगे बढ़ें</span></button>
+          <button id="otp-change" class="btn ghost block" type="button">नंबर बदलें</button>
+        </form>
+        <p class="fine">लॉगिन करके आप Wiom की शर्तें मानते हैं · पायलट में SMS नहीं जाता</p>
+      </section>
+
+      <!-- 3. DUMMY PAYMENT GATEWAY -->
+      <section id="screen-pay" class="screen narrow" data-route="pay" aria-labelledby="pay-title" hidden>
+        <div class="pg">
+          <div class="pg-ribbon" aria-label="टेस्ट मोड">TEST MODE · कोई असली पैसा नहीं कटेगा</div>
+          <div class="pg-head">
+            <div>
+              <div class="pg-merchant">Wiom Networks</div>
+              <div class="pg-order muted" id="pg-order">ऑर्डर —</div>
+            </div>
+            <div class="pg-amount" id="pg-amount">₹14</div>
+          </div>
+          <ul class="pg-items" id="pg-items"></ul>
+          <h1 id="pay-title" class="pg-h">पेमेंट का तरीका चुनें</h1>
+          <div class="pg-methods" role="radiogroup" aria-label="पेमेंट तरीका" id="pg-methods">
+            <button type="button" role="radio" aria-checked="true" class="pm sel" data-m="upi_phonepe"><span class="pm-ic">Pe</span><span class="pm-n">PhonePe</span><span class="pm-t">UPI</span></button>
+            <button type="button" role="radio" aria-checked="false" class="pm" data-m="upi_gpay"><span class="pm-ic">G</span><span class="pm-n">Google Pay</span><span class="pm-t">UPI</span></button>
+            <button type="button" role="radio" aria-checked="false" class="pm" data-m="upi_paytm"><span class="pm-ic">P</span><span class="pm-n">Paytm</span><span class="pm-t">UPI</span></button>
+            <button type="button" role="radio" aria-checked="false" class="pm" data-m="qr"><span class="pm-ic">▦</span><span class="pm-n">QR कोड स्कैन करें</span><span class="pm-t">कोई भी UPI ऐप</span></button>
+            <button type="button" role="radio" aria-checked="false" class="pm" data-m="card"><span class="pm-ic">▭</span><span class="pm-n">टेस्ट कार्ड •••• 1111</span><span class="pm-t">डेबिट / क्रेडिट</span></button>
+          </div>
+          <div class="pg-qr" id="pg-qr" hidden aria-hidden="true"></div>
+          <button id="pg-pay" class="btn primary block lg" type="button"><span class="upi-tag">UPI</span><span class="lbl-t">₹14 का पेमेंट करें</span></button>
+          <div class="pg-sim" role="group" aria-labelledby="pg-sim-t">
+            <div id="pg-sim-t" class="pg-sim-t">टेस्ट मोड · नतीजा चुनें</div>
+            <div class="pg-sim-row">
+              <button type="button" class="sim ok" data-outcome="success">✓ Success</button>
+              <button type="button" class="sim bad" data-outcome="failure">✕ Failure</button>
+              <button type="button" class="sim wait" data-outcome="pending">⏳ Pending</button>
+            </div>
+          </div>
+          <div id="pg-status" class="pg-status" role="status" aria-live="polite" hidden></div>
+          <p class="pg-secure muted">🔒 Wiom डेमो गेटवे · पेमेंट webhook से कन्फ़र्म होता है</p>
+        </div>
+      </section>
+
+      <!-- 4. SUCCESS -->
+      <section id="screen-success" class="screen narrow center-screen" data-route="success" aria-labelledby="succ-title" hidden>
+        <div class="tick" aria-hidden="true">✓</div>
+        <h1 id="succ-title" class="h1">पेमेंट मिल गया · फ़िल्म अनलॉक</h1>
+        <p class="sub en">Payment received · Movie unlocked</p>
+        <ul class="succ-list" id="succ-list"></ul>
+        <button id="btn-watch" class="btn primary block xl" type="button"><span aria-hidden="true">▶</span> अभी देखें <span class="en-s">/ Watch now</span></button>
+        <p class="fine">48 घंटे का समय पहली बार चलाने पर शुरू होगा · 7 दिन में शुरू करें</p>
+      </section>
+
+      <!-- 5. PLAYER -->
+      <section id="screen-watch" class="screen wide" data-route="watch" aria-labelledby="watch-title" hidden>
+        <div id="player-root"></div>
+        <div class="film-meta">
+          <h1 id="watch-title" class="h2"></h1>
+          <div class="parts" id="watch-parts"></div>
+          <details class="about">
+            <summary>फ़िल्म के बारे में · About</summary>
+            <p id="watch-credits" class="muted"></p>
+            <p class="muted kbd-help">कीबोर्ड: <kbd>Space</kbd> चलाएँ/रोकें · <kbd>←</kbd>/<kbd>→</kbd> 10 सेकंड · <kbd>↑</kbd>/<kbd>↓</kbd> आवाज़ · <kbd>F</kbd> फ़ुलस्क्रीन · <kbd>M</kbd> म्यूट · <kbd>C</kbd> भाग</p>
+          </details>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 6. BACKEND PANEL -->
+  <aside id="bp" class="bp" aria-label="बैकएंड लाइव पैनल" hidden></aside>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.51/dist/shaka-player.compiled.js" defer></script>
+<script src="backend-panel.js" defer></script>
+<script src="offer.js" defer></script>
+<script src="player.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+dev/node_modules/
+dev/shots/
+dev/shots-real/
+dev/static-host.log
+dev/test-report*.md
+.DS_Store
