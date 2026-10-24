@@ -1,87 +1,72 @@
-/* OFFER screen — values copied from the Figma "Naveen offer" frame (360×720, light #FAF9FC).
- * Type ramp: Display/D1_48_Bold, Title/T2_24_Bold, Title/T4_16_Regular, Body/B1_16, B2_14, B3_12, Label/L3_12_Semibold. */
-#screen-offer { background: #FAF9FC; color: #161021; }
-.nf {
-  display: flex; flex-direction: column; gap: 24px;
-  max-width: 400px; margin: 0 auto;
-  padding: 8px 16px 112px; /* bottom clears the fixed action bar (80px) */
-  font-family: "Noto Sans", "Noto Sans Devanagari", system-ui, sans-serif;
-}
+/* TITLE screen — Netflix-style PPV landing, wiom.tv dark theme. */
+#screen-offer { padding: 0; }
+.tp { max-width: 560px; margin: 0 auto; }
 
-/* heading */
-.nf-head { display: flex; flex-direction: column; gap: 12px; }
-.nf-h1 { margin: 0; font-weight: 700; font-size: 24px; line-height: 32px; text-align: center; color: #161021; }
-.nf-sub { margin: 0; font-weight: 400; font-size: 16px; line-height: 24px; text-align: center; color: #161021; }
+/* hero */
+.tp-hero { position: relative; aspect-ratio: 16/9; background: #0b0712; overflow: hidden; }
+.tp-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.tp-fade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,7,18,0) 45%, rgba(11,7,18,0.55) 75%, #0b0712 100%); }
+.tp-video { position: absolute; inset: 0; width: 100%; height: 100%; background: #000; }
+.tp-badge {
+  position: absolute; top: 12px; left: 12px; padding: 3px 10px;
+  background: #D9008D; color: #FAF9FC; border-radius: 6px;
+  font-weight: 700; font-size: 11px; letter-spacing: 0.06em;
+}
+.tp-close {
+  position: absolute; top: 10px; right: 10px; width: 34px; height: 34px;
+  border: 0; border-radius: 50%; background: rgba(11,7,18,0.65); color: #FAF9FC;
+  font-size: 15px; cursor: pointer;
+}
+.tp-trailer-btn {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 72px; height: 72px; border: 2px solid rgba(250,249,252,0.9); border-radius: 50%;
+  background: rgba(11,7,18,0.45); cursor: pointer; transition: transform .15s, background .15s;
+}
+.tp-trailer-btn:hover { transform: translate(-50%, -50%) scale(1.07); background: rgba(217,0,141,0.75); }
+.tri { display: inline-block; width: 0; height: 0; border-style: solid; border-width: 13px 0 13px 22px; border-color: transparent transparent transparent #FAF9FC; margin-left: 5px; }
+.tri.dark { border-left-color: #161021; }
+.tri.sm { border-width: 8px 0 8px 13px; margin: 0; }
 
-/* offer / hero */
-.nf-hero {
-  display: flex; flex-direction: column; align-items: center; gap: 24px;
-  padding: 16px 12px;
-  background: linear-gradient(135deg, #D9008D 14.64%, #A3009F 51.41%, #6D17CE 85.36%);
-  box-shadow: 0px 4px 12px 1px rgba(109, 23, 206, 0.3);
-  border-radius: 16px;
-}
-.nf-tag {
-  padding: 4px 16px; background: rgba(255, 255, 255, 0.3); border-radius: 24px;
-  font-weight: 600; font-size: 12px; line-height: 16px; color: #FAF9FC;
-}
-.nf-free { display: flex; flex-direction: column; align-items: center; gap: 4px; align-self: stretch; }
-.nf-d1 { font-weight: 700; font-size: 48px; line-height: 64px; text-align: center; color: #FAF9FC; }
-.nf-b1 { font-weight: 700; font-size: 16px; line-height: 24px; text-align: center; color: #FAF9FC; }
-.nf-terms {
-  align-self: stretch; padding: 12px; background: rgba(255, 255, 255, 0.3); border-radius: 12px;
-  font-weight: 600; font-size: 14px; line-height: 20px; text-align: center; color: #FAF9FC;
-}
+/* body */
+.tp-body { display: flex; flex-direction: column; gap: 14px; padding: 4px 16px 40px; }
+.tp-title { margin: 0; font-size: 26px; line-height: 34px; font-weight: 800; }
+.tp-meta { display: flex; align-items: center; gap: 10px; color: #A7A1B2; font-size: 14px; font-weight: 600; }
+.tp-meta .hd { border: 1px solid #665E75; border-radius: 4px; padding: 0 6px; font-size: 11px; color: #D7D3E0; }
+.tp-price { display: flex; align-items: baseline; gap: 10px; }
+.tp-price .v { font-size: 34px; font-weight: 800; color: #FAF9FC; }
+.tp-price .s { color: #A7A1B2; font-size: 14px; font-weight: 600; }
+.tp-owned { color: #2ecc8f; font-weight: 700; font-size: 14px; }
 
-/* movie card — same card treatment as the design's small offer cards (2dp shadow, radius 16) */
-.nf-movie {
-  display: flex; align-items: center; gap: 12px; padding: 12px;
-  background: #FAF9FC; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15); border-radius: 16px;
+/* buttons — Netflix pattern: solid light primary, translucent secondary */
+.tp-cta {
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+  width: 100%; min-height: 52px; border: 0; border-radius: 10px; cursor: pointer;
+  background: #FAF9FC; color: #161021;
+  font-family: inherit; font-size: 17px; font-weight: 800;
 }
-.nf-poster {
-  width: 96px; height: 54px; flex: none; border-radius: 8px;
-  background-color: #352D42; background-size: cover; background-position: center;
+.tp-cta:hover { background: #FFB2E4; }
+.tp-cta:disabled { opacity: 0.7; cursor: default; }
+.tp-sec {
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+  width: 100%; min-height: 48px; border: 0; border-radius: 10px; cursor: pointer;
+  background: rgba(250,249,252,0.14); color: #FAF9FC;
+  font-family: inherit; font-size: 15px; font-weight: 700;
 }
-.nf-mi { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.nf-mt { font-weight: 700; font-size: 14px; line-height: 20px; color: #161021; }
-.nf-mm { font-weight: 600; font-size: 12px; line-height: 16px; color: #665E75; }
-.nf-owned { font-weight: 600; font-size: 12px; line-height: 16px; color: #008043; }
+.tp-sec:hover { background: rgba(250,249,252,0.24); }
+.tp-syn { margin: 2px 0 0; color: #D7D3E0; font-size: 14px; line-height: 22px; }
 
-/* note / offer auto-applies */
-.nf-note { display: flex; align-items: stretch; border: 1px solid #008043; border-radius: 16px; overflow: hidden; }
-.nf-note-bar { width: 8px; flex: none; background: #008043; }
-.nf-note-in { display: flex; align-items: center; gap: 12px; padding: 12px; background: #E1FAED; flex: 1; }
-.nf-note-ic {
-  width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center;
-  background: #C9F0DD; border-radius: 24px; font-size: 18px;
-}
-.nf-note-tx { display: flex; flex-direction: column; gap: 4px; }
-.nf-note-tx .t { font-weight: 600; font-size: 14px; line-height: 20px; color: #008043; }
-.nf-note-tx .s { font-weight: 400; font-size: 12px; line-height: 16px; color: #665E75; }
+/* parts (episodes-style rows) */
+.tp-parts { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+.tp-ph { font-size: 16px; font-weight: 800; }
+.tp-part { display: flex; align-items: center; gap: 14px; padding: 10px 12px; background: rgba(250,249,252,0.06); border-radius: 10px; }
+.tp-part .n { font-size: 22px; font-weight: 800; color: #665E75; }
+.tp-part .t { font-weight: 700; font-size: 14px; }
+.tp-part .s { color: #A7A1B2; font-size: 12px; margin-top: 2px; }
+.tp-credits { margin: 8px 0 0; color: #665E75; font-size: 11px; line-height: 16px; }
 
-/* fixed bottom action bar */
-.nf-actions {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
-  padding: 16px; background: #FAF9FC; box-shadow: 0 -2px 12px rgba(22, 16, 33, 0.08);
-}
-.nf-cta {
-  display: flex; justify-content: center; align-items: center; gap: 12px;
-  width: 100%; max-width: 368px; margin: 0 auto; padding: 12px 16px; min-height: 48px;
-  background: #FF66C9; border: 0; border-radius: 16px; cursor: pointer;
-  font-family: inherit; font-weight: 500; font-size: 16px; line-height: 24px; color: #161021;
-}
-.nf-cta:hover { background: #FFB2E4; }
-.nf-cta:disabled { opacity: 0.7; cursor: default; }
-.nf-cta .spin {
-  width: 16px; height: 16px; border: 2px solid rgba(22, 16, 33, 0.3); border-top-color: #161021;
-  border-radius: 50%; animation: nfspin 0.8s linear infinite;
-}
-@keyframes nfspin { to { transform: rotate(360deg); } }
-
-/* hide the fixed bar when the offer screen is not active */
-#screen-offer[hidden] .nf-actions { display: none; }
+.spin.dark { border-color: rgba(22,16,33,0.3); border-top-color: #161021; }
 
 @media (min-width: 720px) {
-  .nf { padding-top: 24px; }
-  .nf-actions { position: sticky; box-shadow: none; background: transparent; padding: 0; }
+  .tp { max-width: 720px; }
+  .tp-hero { border-radius: 14px; margin-top: 12px; }
 }

@@ -215,6 +215,23 @@ route('POST', '/api/otp/send', async (ctx) => {
   send(ctx, 200, { sent: true, demo_otp: OTP });
 });
 
+// PPV flow: no OTP — identity is the device.
+route('POST', '/api/session/guest', async (ctx) => {
+  const { device_id } = await json(ctx.req);
+  if (!/^[\w-]{6,64}$/.test(String(device_id || ''))) return err(ctx, 400, 'bad_device', 'device_id सही नहीं है');
+  const phone = 'g' + createHmac('sha256', 'guest').update(device_id).digest('hex').slice(0, 15);
+  let u = users.get(phone);
+  const isNew = !u;
+  if (!u) { u = { phone, created_at: now(), entitlements: new Map(), net_plan: null, events: [], outbox: [] }; users.set(phone, u); }
+  ctx.user = u;
+  ctx.ev('session.guest', `guest session for device …${String(device_id).slice(-4)} (no OTP in PPV flow)`);
+  ctx.ev(isNew ? 'user.create' : 'user.lookup', `${isNew ? 'new' : 'returning'} device identity`);
+  const token = randomBytes(24).toString('base64url');
+  sessions.set(token, phone);
+  ctx.ev('session.issue', 'bearer session issued (30 d)');
+  send(ctx, 200, { session: token, user: { phone_masked: 'इसी डिवाइस पर' } });
+});
+
 route('POST', '/api/otp/verify', async (ctx) => {
   const { phone, otp } = await json(ctx.req);
   if (!/^[6-9]\d{9}$/.test(String(phone || ''))) return err(ctx, 400, 'bad_phone', 'मोबाइल नंबर सही नहीं है');

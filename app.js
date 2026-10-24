@@ -82,7 +82,9 @@
     var f = null;
     try { var r = await fetch(CFG.MEDIA_BASE + 'film.json', { cache: 'no-cache' }); if (r.ok) f = await r.json(); } catch (e) { /* fall back */ }
     f = Object.assign({}, FALLBACK_FILM, f || {});
-    f.poster = f.poster ? new URL(f.poster, new URL(CFG.MEDIA_BASE, location.href)).href : CFG.MEDIA_BASE + 'poster.jpg';
+    var base = new URL(CFG.MEDIA_BASE, location.href);
+    f.poster = new URL(f.poster || 'poster.jpg', base).href;
+    if (f.trailer) f.trailer = new URL(f.trailer, base).href;
     S.film = f;
     $('watch-title').textContent = f.title;
     $('watch-credits').textContent = f.credits || '';
@@ -108,8 +110,11 @@
     var r = (location.hash || '#offer').slice(1).split('?')[0];
     if (ROUTES.indexOf(r) < 0) r = 'offer';
     if (r !== 'watch' && player) { player.destroy(); player = null; }
-    // guards
-    if ((r === 'pay' || r === 'success' || r === 'watch') && !S.session) { setIntent(r === 'watch' ? 'watch' : 'buy'); return go('login'); }
+    // guards — PPV flow has no login: a guest session is created silently, then we re-route
+    if ((r === 'pay' || r === 'success' || r === 'watch') && !S.session) {
+      ensureSession().then(route, function () { toast('कनेक्शन नहीं बन पाया — फिर कोशिश करें', 'bad'); go('offer'); });
+      return;
+    }
     if (r === 'pay' && !S.orderId) return go('offer');
     document.querySelectorAll('.screen').forEach(function (s) { s.hidden = s.dataset.route !== r; });
     window.scrollTo(0, 0);
@@ -139,12 +144,22 @@
       }).catch(function () { offerOwned = null; });
     } else offerOwned = null;
   }
+  async function ensureSession() {
+    if (S.session) return;
+    var r = await api('POST', '/api/session/guest', { device_id: deviceId });
+    setSession(r.session, r.user && r.user.phone_masked);
+  }
   async function offerCta() {
     if (offerOwned) return go('watch');
-    if (!S.session) { setIntent('buy'); return go('login'); }
     var btn = $('offer-cta');
     busy(btn, true);
-    try { await createOrder(); go('pay'); }
+    try {
+      await ensureSession();
+      var me = await api('GET', '/api/me');
+      var owned = (me.entitlements || []).some(function (x) { return x.status === 'active' || x.status === 'not_started'; });
+      if (owned) return go('watch');
+      await createOrder(); go('pay');
+    }
     catch (e) { toast(e.message || 'ऑर्डर नहीं बन पाया', 'bad'); busy(btn, false); }
   }
   async function createOrder() {
@@ -281,7 +296,7 @@
       if ($('screen-pay').hidden) return;
       try {
         var st = await api('GET', '/api/orders/' + encodeURIComponent(S.orderId));
-        if (st.status === 'paid') { payStatus('ok', '✓ पेमेंट मिल गया'); payBusy = false; LS.set('wiom_order_id', null); return setTimeout(function () { go('success'); }, 500); }
+        if (st.status === 'paid') { payStatus('ok', '✓ पेमेंट मिल गया — फ़िल्म शुरू हो रही है'); payBusy = false; LS.set('wiom_order_id', null); return setTimeout(function () { go('watch'); }, 600); }
         if (st.status === 'failed') return payFailed();
       } catch (e) { /* transient — keep polling */ }
       if (Date.now() - t0 > 120000) { payBusy = false; setPayBusy(false); return payStatus('bad', 'कन्फ़र्मेशन में देर हो रही है — पैसे कटे हों तो अपने-आप वापस आ जाएँगे'); }
