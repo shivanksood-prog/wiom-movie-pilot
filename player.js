@@ -237,8 +237,11 @@
       drm.servers['com.widevine.alpha'] = s.drm.license_url;
       drm.advanced['com.widevine.alpha'] = { videoRobustness: ['SW_SECURE_CRYPTO'], audioRobustness: ['SW_SECURE_CRYPTO'] };
       if (s.drm.fairplay) {
-        drm.servers['com.apple.fps'] = s.drm.fairplay.license_url;
-        drm.advanced['com.apple.fps'] = { serverCertificateUri: s.drm.fairplay.certificate_url };
+        // both key-system ids: 'com.apple.fps' (modern EME) and 'com.apple.fps.1_0' (webkit-prefixed polyfill)
+        ['com.apple.fps', 'com.apple.fps.1_0'].forEach(function (ks) {
+          drm.servers[ks] = s.drm.fairplay.license_url;
+          drm.advanced[ks] = { serverCertificateUri: s.drm.fairplay.certificate_url };
+        });
       }
     }
     var retry = { maxAttempts: 4, baseDelay: 600, backoffFactor: 2, fuzzFactor: 0.5, timeout: 20000 };
