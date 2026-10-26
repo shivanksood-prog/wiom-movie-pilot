@@ -253,7 +253,16 @@
     });
     var FP = (shaka.drm && shaka.drm.FairPlay) || (shaka.util && shaka.util.FairPlayUtils);
     if (mode === 'widevine' && safari && FP && FP.initDataTransform) {
-      try { player.configure('drm.initDataTransform', FP.initDataTransform); } catch (e) { /* older shaka */ }
+      // shaka invokes the transform as (initData, initDataType, drmInfo); the FairPlay helper
+      // wants (initData, contentId, certBytes) — wrap it, and only touch 'skd' init data.
+      try {
+        player.configure('drm.initDataTransform', function (initData, initDataType, drmInfo) {
+          if (initDataType !== 'skd') return initData;
+          var contentId = FP.defaultGetContentId ? FP.defaultGetContentId(initData) : '';
+          var cert = drmInfo && drmInfo.serverCertificate;
+          return FP.initDataTransform(initData, contentId, cert);
+        });
+      } catch (e) { /* older shaka */ }
     }
 
     var net = player.getNetworkingEngine(), RT = shaka.net.NetworkingEngine.RequestType;
